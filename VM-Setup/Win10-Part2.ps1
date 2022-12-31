@@ -1,7 +1,7 @@
-﻿###################################################################
+###################################################################
 #
 # .Description
-# Add new Server to a domain
+# Add new workstation to a domain
 #
 # .Author
 # Mandie Allen
@@ -15,9 +15,8 @@ $hostname = hostname
 
 $domainName = Read-Host "Enter the fully qualified domain name of the domain you created"
 
-Add-Computer -ComputerName $hostname -LocalCredential $hostname\Administrator -DomainName $domainName -Credential $domainName\Administrator 
-
+Add-Computer -ComputerName $hostname -DomainName $domainName -Credential $domainName\Administrator 
 Write-Host "Reboot machine after confirmation"
 Pause
 
-Restart-Computer
+Restart-Computer -Confirm

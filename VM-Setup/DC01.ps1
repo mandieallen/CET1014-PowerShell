@@ -11,12 +11,11 @@
 #
 ##################################################################
 
-Start-Transcript -Path c:\Logs\DC01Creation.txt
-
+$ConfirmPreference = 'None'
 
 Write-Host "The following steps will create a domain environment." -ForegroundColor DarkCyan 
 
-Get-NetAdapter | Get-NetIPAddress | Remove-NetIPAddress -WarningAction Continue
+Get-NetAdapter | Get-NetIPAddress | Remove-NetIPAddress -Confirm:$false
 Get-NetAdapter | Remove-NetRoute
 Get-NetAdapter | New-NetIPAddress -IPAddress '192.168.10.10' -PrefixLength '24' -DefaultGateway '192.168.10.1'
 Get-NetAdapter | Set-DnsClientServerAddress -ServerAddresses ('127.0.0.1')
@@ -35,8 +34,8 @@ Add-WindowsFeature -Name "DNS" -IncludeAllSubFeature -IncludeManagementTools -Lo
 Add-WindowsFeature -Name "gpmc" -IncludeAllSubFeature -IncludeManagementTools -LogPath 'C:\Logs\gpmc.txt'
 Add-WindowsFeature -Name 'RSAT-AD-Tools' -LogPath 'C:\Logs\RSAT-AD-Tools.txt'
 
-
-Stop-Transcript
+Write-Host "Reboot machine after confirmation"
+Pause
 
 Restart-Computer -Confirm
 
