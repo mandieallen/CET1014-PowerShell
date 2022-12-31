@@ -17,7 +17,6 @@ $domainName = Read-Host "Enter a fully qualified domain name (ex. contoso.com, m
 Write-Host "When creating your domain be sure to save your SafeModeAdministratorPassword, it cannot be retrieved afterwards" -ForegroundColor Red
 Pause
 
-
 Install-ADDSForest -DomainName $domainName
 
 Stop-Transcript
