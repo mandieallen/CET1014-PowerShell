@@ -39,7 +39,7 @@ function Get-SavePath {
     do {
     $global:VHDDirectory = Read-Host "Enter a directory to save your VM files"
     Write-Output $global:VHDDirectory
-    $global:verifyPath = Read-Host "Is this the correct directory? y/n"
+    #$global:verifyPath = Read-Host "Is this the correct directory? y/n"
     }
     until (Test-Path $global:VHDDirectory)
 }
@@ -63,18 +63,20 @@ function Get-WindowsISO {
 }
 
 #create hyper-V vm's
-function Create-VM ($VMName, $VHDFolder) {
-    do {
-        $VmCreation = New-VM -Name $VMName `
+function New-VMCreation ($VMName, $VHDFolder) {
+    #do {
+        #$VmCreation = 
+        New-VM -Name $VMName `
                       -MemoryStartupBytes 2GB `
                       -BootDevice VHD `
                       -NewVHDPath $VHDFolder\$VMName.vhdx `
                       -Path $VHDFolder\VMData `
                       -NewVHDSizeBytes 40GB `
                       -Generation 2 `
-                      -Switch "CET1014 Internal Switch" `                      
+                      -Switch "CET1014 Internal Switch" `
+       # $VmCreation                      
            
-    } until (Test-Path $VHDPath)
+  #  } until (Test-Path $VHDPath)
 }
 
 Create-Switch
@@ -83,14 +85,12 @@ Get-ServerISO
 Get-WindowsISO
 
 #calls create-VM funtion to create VM and adds a dvd drive with path to iso for install
-if ($global:verifyPath -eq 'y') {
-    foreach ($vm in $VMList) {
-        Create-VM -VMName $VM -VHDFolder $global:VHDDirectory
-        if (($vm -eq "$studentNumber-CET1014-DC01") -or ($vm -eq "$studentNumber-CET1014-SVR")) {
-        Add-VMDvdDrive -VMName $vm -Path $global:serverISOPath
-        }
-        elseif ($vm -eq "$studentNumber-CET1014-Win10"){
-        Add-VMDvdDrive -VMName $vm -Path $global:win10ISOPath
-        }
-       }
-}
+foreach ($vm in $VMList) {
+    New-VMCreation -VMName $VM -VHDFolder $global:VHDDirectory
+    if (($vm -eq "$studentNumber-CET1014-DC01") -or ($vm -eq "$studentNumber-CET1014-SVR")) {
+    Add-VMDvdDrive -VMName $vm -Path $global:serverISOPath
+    }
+    elseif ($vm -eq "$studentNumber-CET1014-Win10"){
+    Add-VMDvdDrive -VMName $vm -Path $global:win10ISOPath
+    }
+    }
