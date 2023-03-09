@@ -92,7 +92,7 @@ foreach ($vm in $VMList) {
 
     New-VMCreation -VMName $VM -VHDFolder $global:VHDDirectory -switchName (Get-VMSwitch| Where-Object name -eq "CET1014 Internal Switch").name
     
-    if (($vm -eq "$studentNumber-CET1014-DC01") -or ($vm -eq "$studentNumber-CET1014-SVR")) {
+    if (($vm -eq "$studentNumber-CET1014-DC01") -or ($vm -eq "$studentNumber-CET1014-SVR1")) {
     Add-VMDvdDrive -VMName $vm -Path $global:serverISOPath
     }
     elseif ($vm -eq "$studentNumber-CET1014-Win10"){
